@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.net.URL;
 
 public class SudokuPanel extends JPanel {
-    private Sudoku sukodu;
+    private Sudoku sudoku;
     private int selectedColumn;
     private int selectedRow;
     private int boardWidth;
@@ -27,7 +27,7 @@ public class SudokuPanel extends JPanel {
         columnWidth = 0;
         rowHeight = 0;
         fontSize = 26;
-        this.sukodu = new SudokuCreator().createSudoku(SudokuType.NINEBYNINE, 0.88888);
+        this.sudoku = new SudokuCreator().createSudoku(SudokuType.NINEBYNINE, 0.88888);
         this.setPreferredSize(new Dimension(500, 500));
         this.addMouseListener(new MouseInputAdapter() {
             @Override
@@ -43,16 +43,12 @@ public class SudokuPanel extends JPanel {
                         // open audio clip and load samples from the audio input stream
                         clip.open(audioIn);
                         clip.start();
-                    } catch (UnsupportedAudioFileException exception) {
-                        exception.printStackTrace();
-                    } catch (IOException exception) {
-                        exception.printStackTrace();
-                    } catch (LineUnavailableException exception) {
+                    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException exception) {
                         exception.printStackTrace();
                     }
 
-                    int slotWidth = boardWidth / sukodu.getNumColumns();
-                    int slotHeight = boardHeight / sukodu.getNumRows();
+                    int slotWidth = boardWidth / sudoku.getNumColumns();
+                    int slotHeight = boardHeight / sudoku.getNumRows();
                     selectedRow = e.getY() / slotHeight;
                     selectedColumn = e.getX() / slotWidth;
                     e.getComponent().repaint();
@@ -62,7 +58,7 @@ public class SudokuPanel extends JPanel {
     }
 
     public void setSudoku(Sudoku sudoku) {
-        this.sukodu = sudoku;
+        this.sudoku = sudoku;
     }
 
     @Override
@@ -73,11 +69,11 @@ public class SudokuPanel extends JPanel {
         graphics2D.setColor(new Color(255, 233, 226));
 
         //set the proper distance between columns
-        setColumnWidth(this.getWidth() / sukodu.getNumColumns());
-        setRowHeight(this.getHeight() / sukodu.getNumRows());
+        setColumnWidth(this.getWidth() / sudoku.getNumColumns());
+        setRowHeight(this.getHeight() / sudoku.getNumRows());
 
-        boardWidth = (this.getWidth() / sukodu.getNumColumns()) * sukodu.getNumColumns();
-        boardHeight = (this.getHeight() / sukodu.getNumRows()) * sukodu.getNumRows();
+        boardWidth = (this.getWidth() / sudoku.getNumColumns()) * sudoku.getNumColumns();
+        boardHeight = (this.getHeight() / sudoku.getNumRows()) * sudoku.getNumRows();
 
         //fill with color the sudoku board
         graphics2D.fillRect(0, 0, boardWidth, boardHeight);
@@ -86,7 +82,7 @@ public class SudokuPanel extends JPanel {
 
         //set the line's width between the columns of the sudoku board
         for (int column = 0; column <= boardWidth; column += columnWidth) {
-            if ((column / columnWidth) % sukodu.getBoxWidth() == 0) {
+            if ((column / columnWidth) % sudoku.getBoxWidth() == 0) {
                 graphics2D.setStroke(new BasicStroke(3));
             } else {
                 graphics2D.setStroke(new BasicStroke(1));
@@ -96,7 +92,7 @@ public class SudokuPanel extends JPanel {
 
         //set the line's width between rows of the sudoku board
         for (int row = 0; row <= boardHeight; row += rowHeight) {
-            if ((row / rowHeight) % sukodu.getBoxHeight() == 0) {
+            if ((row / rowHeight) % sudoku.getBoxHeight() == 0) {
                 graphics2D.setStroke(new BasicStroke(3));
             } else {
                 graphics2D.setStroke(new BasicStroke(1));
@@ -118,12 +114,12 @@ public class SudokuPanel extends JPanel {
 
     //draw the base numbers of the sudoku board
     private void fillSudokuNumbers(Graphics2D graphics2D, FontRenderContext fContext, Font f) {
-        for (int row = 0; row < sukodu.getNumRows(); row++) {
-            for (int col = 0; col < sukodu.getNumColumns(); col++) {
-                if (!sukodu.isSlotAvailable(row, col)) {
-                    int textWidth = (int) f.getStringBounds(sukodu.getValue(row, col), fContext).getWidth();
-                    int textHeight = (int) f.getStringBounds(sukodu.getValue(row, col), fContext).getHeight();
-                    graphics2D.drawString(sukodu.getValue(row, col), (col * columnWidth) + ((columnWidth / 2) - (textWidth / 2)), (row * rowHeight) + ((rowHeight / 2) + (textHeight / 2)) - 5);
+        for (int row = 0; row < sudoku.getNumRows(); row++) {
+            for (int col = 0; col < sudoku.getNumColumns(); col++) {
+                if (!sudoku.isSlotAvailable(row, col)) {
+                    int textWidth = (int) f.getStringBounds(sudoku.getValue(row, col), fContext).getWidth();
+                    int textHeight = (int) f.getStringBounds(sudoku.getValue(row, col), fContext).getHeight();
+                    graphics2D.drawString(sudoku.getValue(row, col), (col * columnWidth) + ((columnWidth / 2) - (textWidth / 2)), (row * rowHeight) + ((rowHeight / 2) + (textHeight / 2)) - 5);
                 }
             }
         }
@@ -133,15 +129,11 @@ public class SudokuPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (selectedColumn != -1 && selectedRow != -1) {
-                sukodu.makeMove(selectedRow, selectedColumn, ((JButton) e.getSource()).getText(), true);
+                sudoku.makeMove(selectedRow, selectedColumn, ((JButton) e.getSource()).getText(), true);
                 repaint();
             }
         }
     }
-
-    /*public Sudoku getSukodu() {
-        return sukodu;
-    }*/
 
     public void setColumnWidth(int columnWidth) {
         this.columnWidth = columnWidth;

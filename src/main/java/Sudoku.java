@@ -1,7 +1,6 @@
 public class Sudoku {
 
     protected String [][] board;
-    //table to determine if a slot is mutable
     protected boolean [][] mutable;
     private final int ROWS;
     private final int COLUMNS;
