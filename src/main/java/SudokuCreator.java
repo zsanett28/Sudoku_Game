@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class SudokuCreator {
 
-    public Sudoku createSudoku(SudokuType sudokuType) {
+    public Sudoku createSudoku(SudokuType sudokuType, double level) {
         Sudoku sudoku = new Sudoku(sudokuType.getRows(), sudokuType.getColumns(), sudokuType.getBoxWidth(), sudokuType.getBoxHeight(), sudokuType.getValidValues());
         Sudoku copy = new Sudoku(sudoku);
 
@@ -20,7 +20,7 @@ public class SudokuCreator {
 
         backtrackSudokuSolver(0, 0, copy);
 
-        int numberOfValuesToKeep = (int)(0.99999*(copy.getNumRows()*copy.getNumRows()));
+        int numberOfValuesToKeep = (int)(level*(copy.getNumRows()*copy.getNumRows()));
 
         for(int i = 0;i < numberOfValuesToKeep;) {
             int randomRow = randomGenerator.nextInt(sudoku.getNumRows());

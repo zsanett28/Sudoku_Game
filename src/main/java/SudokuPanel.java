@@ -27,7 +27,7 @@ public class SudokuPanel extends JPanel {
         columnWidth = 0;
         rowHeight = 0;
         fontSize = 26;
-        this.sukodu = new SudokuCreator().createSudoku(SudokuType.NINEBYNINE);
+        this.sukodu = new SudokuCreator().createSudoku(SudokuType.NINEBYNINE, 0.88888);
         this.setPreferredSize(new Dimension(500, 500));
         this.addMouseListener(new MouseInputAdapter() {
             @Override

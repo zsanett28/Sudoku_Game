@@ -31,21 +31,9 @@ public class SudokuFrame extends JFrame {
         JMenu newGameMenu = new JMenu("New Game");
         newGameMenu.setForeground(Color.WHITE);
 
-        JMenuItem sixBySix = new JMenuItem("Start new 6 by 6 game");
-        sixBySix.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                recreateGame(SudokuType.SIXBYSIX);
-            }
-        });
-
-        JMenuItem nineByNine = new JMenuItem("Start new 9 by 9 game");
-        nineByNine.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                recreateGame(SudokuType.NINEBYNINE);
-            }
-        });
+        final JMenuItem easy = new JMenuItem("Easy");
+        final JMenuItem medium = new JMenuItem("Medium");
+        final JMenuItem hard = new JMenuItem("Hard");
 
         JMenu helpMenu = new JMenu("Help");
         helpMenu.setForeground(Color.WHITE);
