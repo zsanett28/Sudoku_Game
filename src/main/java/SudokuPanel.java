@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.URL;
 
 public class SudokuPanel extends JPanel {
+    private final int fontSize;
     private Sudoku sudoku;
     private int selectedColumn;
     private int selectedRow;
@@ -17,7 +18,6 @@ public class SudokuPanel extends JPanel {
     private int boardHeight;
     private int columnWidth;
     private int rowHeight;
-    private final int fontSize;
 
     public SudokuPanel() {
         selectedColumn = -1;
@@ -27,7 +27,6 @@ public class SudokuPanel extends JPanel {
         columnWidth = 0;
         rowHeight = 0;
         fontSize = 26;
-        this.sudoku = new SudokuCreator().createSudoku(SudokuType.NINEBYNINE, 0.88888);
         this.setPreferredSize(new Dimension(500, 500));
         this.addMouseListener(new MouseInputAdapter() {
             @Override
@@ -125,6 +124,14 @@ public class SudokuPanel extends JPanel {
         }
     }
 
+    public void setColumnWidth(int columnWidth) {
+        this.columnWidth = columnWidth;
+    }
+
+    public void setRowHeight(int rowHeight) {
+        this.rowHeight = rowHeight;
+    }
+
     public class NumberActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -133,13 +140,5 @@ public class SudokuPanel extends JPanel {
                 repaint();
             }
         }
-    }
-
-    public void setColumnWidth(int columnWidth) {
-        this.columnWidth = columnWidth;
-    }
-
-    public void setRowHeight(int rowHeight) {
-        this.rowHeight = rowHeight;
     }
 }

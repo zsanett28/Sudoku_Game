@@ -12,7 +12,6 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 
 public class SudokuFrame extends JFrame {
-
     private final JPanel cardPanel;
     private final JPanel startPanel;
     private final SudokuPanel sudokuPanel;
@@ -186,7 +185,9 @@ public class SudokuFrame extends JFrame {
             layout.show(cardPanel, "MainPanel");
             startTimer(timeLabel);
             mainMenuBar.setVisible(true);
-            recreateGame(SudokuType.SIXBYSIX, 0.66666);
+            MediumGame gameLevel = new MediumGame();
+            Sudoku newSudoku = gameLevel.createSudoku(SudokuType.SIXBYSIX);
+            recreateGame(newSudoku);
             setLevelFor6x6(easy, medium, hard);
         });
 
@@ -194,7 +195,9 @@ public class SudokuFrame extends JFrame {
             layout.show(cardPanel, "MainPanel");
             startTimer(timeLabel);
             mainMenuBar.setVisible(true);
-            recreateGame(SudokuType.NINEBYNINE, 0.66666);
+            MediumGame gameLevel = new MediumGame();
+            Sudoku newSudoku = gameLevel.createSudoku(SudokuType.NINEBYNINE);
+            recreateGame(newSudoku);
             setLevelFor9x9(easy, medium, hard);
         });
 
@@ -291,9 +294,9 @@ public class SudokuFrame extends JFrame {
     }
 
     //regenerate the sudoku board and number buttons according to sudoku type parameter
-    public void recreateGame(SudokuType sukoduType, double level) {
+    public void recreateGame(Sudoku sudoku) {
         stopWatch.start();
-        this.sudoku = new SudokuCreator().createSudoku(sukoduType, level);
+        this.sudoku = sudoku;
 
         sudokuPanel.setSudoku(sudoku);
         numbersSelectionPanel.removeAll();
@@ -319,15 +322,39 @@ public class SudokuFrame extends JFrame {
     }
 
     private void setLevelFor6x6(JMenuItem easy, JMenuItem medium, JMenuItem hard) {
-        easy.addActionListener(e -> recreateGame(SudokuType.SIXBYSIX, 0.88888));
-        medium.addActionListener(e -> recreateGame(SudokuType.SIXBYSIX, 0.66666));
-        hard.addActionListener(e -> recreateGame(SudokuType.SIXBYSIX, 0.44444));
+        easy.addActionListener(e -> {
+            EasyGame gameLevel = new EasyGame();
+            Sudoku newSudoku = gameLevel.createSudoku(SudokuType.SIXBYSIX);
+            recreateGame(newSudoku);
+        });
+        medium.addActionListener(e -> {
+            MediumGame gameLevel = new MediumGame();
+            Sudoku newSudoku = gameLevel.createSudoku(SudokuType.SIXBYSIX);
+            recreateGame(newSudoku);
+        });
+        hard.addActionListener(e -> {
+            HardGame gameLevel = new HardGame();
+            Sudoku newSudoku = gameLevel.createSudoku(SudokuType.SIXBYSIX);
+            recreateGame(newSudoku);
+        });
     }
 
     private void setLevelFor9x9(JMenuItem easy, JMenuItem medium, JMenuItem hard) {
-        easy.addActionListener(e -> recreateGame(SudokuType.NINEBYNINE, 0.88888));
-        medium.addActionListener(e -> recreateGame(SudokuType.NINEBYNINE, 0.66666));
-        hard.addActionListener(e -> recreateGame(SudokuType.NINEBYNINE, 0.44444));
+        easy.addActionListener(e -> {
+            EasyGame gameLevel = new EasyGame();
+            Sudoku newSudoku = gameLevel.createSudoku(SudokuType.NINEBYNINE);
+            recreateGame(newSudoku);
+        });
+        medium.addActionListener(e -> {
+            MediumGame gameLevel = new MediumGame();
+            Sudoku newSudoku = gameLevel.createSudoku(SudokuType.NINEBYNINE);
+            recreateGame(newSudoku);
+        });
+        hard.addActionListener(e -> {
+            HardGame gameLevel = new HardGame();
+            Sudoku newSudoku = gameLevel.createSudoku(SudokuType.NINEBYNINE);
+            recreateGame(newSudoku);
+        });
     }
 
     private void startTimer(final JLabel timeLabel) {
