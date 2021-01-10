@@ -293,7 +293,10 @@ public class SudokuFrame extends JFrame {
         setVisible(true);
     }
 
-    //regenerate the sudoku board and number buttons according to sudoku type parameter
+    /**
+     * Regenerate the sudoku board and number buttons according to sudoku the type level of the chosen sudoku.
+     * @param sudoku sudoku game
+     */
     public void recreateGame(Sudoku sudoku) {
         stopWatch.start();
         this.sudoku = sudoku;
@@ -308,7 +311,10 @@ public class SudokuFrame extends JFrame {
         numbersSelectionPanel.repaint();
     }
 
-    //design and add number buttons to numbersSelectionPanel
+    /**
+     * Design and add number buttons to numbersSelectionPanel.
+     * @param sudoku sudoku game
+     */
     private void addNumberButtons(Sudoku sudoku) {
         for (String number : sudoku.getValidValues()) {
             JButton numberButton = new JButton(number);
@@ -321,6 +327,12 @@ public class SudokuFrame extends JFrame {
         }
     }
 
+    /**
+     * Set ActionListeners to JMenuItems of 6x6 sudoku.
+     * @param easy easy level JMenuItem
+     * @param medium medium level JMenuItem
+     * @param hard hard level JMenuItem
+     */
     private void setLevelFor6x6(JMenuItem easy, JMenuItem medium, JMenuItem hard) {
         easy.addActionListener(e -> {
             EasyGame gameLevel = new EasyGame();
@@ -339,6 +351,12 @@ public class SudokuFrame extends JFrame {
         });
     }
 
+    /**
+     * Set ActionListeners to JMenuItems of 9x9 sudoku.
+     * @param easy easy level JMenuItem
+     * @param medium medium level JMenuItem
+     * @param hard hard level JMenuItem
+     */
     private void setLevelFor9x9(JMenuItem easy, JMenuItem medium, JMenuItem hard) {
         easy.addActionListener(e -> {
             EasyGame gameLevel = new EasyGame();
@@ -357,6 +375,10 @@ public class SudokuFrame extends JFrame {
         });
     }
 
+    /**
+     * Start the stopwatch, after the beginning of the game.
+     * @param timeLabel label, where the elapsed time appears
+     */
     private void startTimer(final JLabel timeLabel) {
         Thread thread = new Thread(() -> {
             stopWatch.start();

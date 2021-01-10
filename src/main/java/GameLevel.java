@@ -5,12 +5,19 @@ import java.util.Random;
 
 public class GameLevel implements SudokuStrategy {
 
+    /**
+     * Return a sudoku game with random numbers.
+     * @param sudokuType chosen type of the sudoku game (6x6 or 9x9)
+     * @param level depends on the chosen level of the sudoku game (easy, medium, hard)
+     * @return sudoku game
+     */
     public Sudoku createSudoku(SudokuType sudokuType, double level) {
         Sudoku sudoku = new Sudoku(sudokuType.getRows(), sudokuType.getColumns(), sudokuType.getBoxWidth(), sudokuType.getBoxHeight(), sudokuType.getValidValues());
         Sudoku copy = new Sudoku(sudoku);
 
         Random randomGenerator = new Random();
 
+        //stream
         List<String> notUsedValidValues = new ArrayList<String>(Arrays.asList(copy.getValidValues()));
         for (int row = 0; row < copy.getNumRows(); row++) {
             int randomValue = randomGenerator.nextInt(notUsedValidValues.size());
@@ -35,6 +42,15 @@ public class GameLevel implements SudokuStrategy {
         return sudoku;
     }
 
+    /**
+     * Solve the sudoku with backtracking.
+     * @param row number of rows of the sudoku
+     * @param column number of columns of the sudoku
+     * @param sudoku sudoku game, which is created
+     * @return
+     * true, if the moves are valid during solving the sudoku
+     * false, if the moves are not valid during solving the sudoku
+     */
     public boolean backtrackSudokuSolver(int row, int column, Sudoku sudoku) {
         //if the move is not valid return false
         if (!sudoku.inRange(row, column)) {

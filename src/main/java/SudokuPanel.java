@@ -56,10 +56,18 @@ public class SudokuPanel extends JPanel {
         });
     }
 
+    /**
+     * Set the sudoku parameter.
+     * @param sudoku sudoku game
+     */
     public void setSudoku(Sudoku sudoku) {
         this.sudoku = sudoku;
     }
 
+    /**
+     * Draw the sudoku board on the sudoku panel.
+     * @param g Graphics element
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -103,6 +111,7 @@ public class SudokuPanel extends JPanel {
         graphics2D.setFont(f);
         FontRenderContext fContext = graphics2D.getFontRenderContext();
 
+        //draw the base numbers of the sudoku board
         fillSudokuNumbers(graphics2D, fContext, f);
 
         if (selectedColumn != -1 && selectedRow != -1) {
@@ -111,7 +120,6 @@ public class SudokuPanel extends JPanel {
         }
     }
 
-    //draw the base numbers of the sudoku board
     private void fillSudokuNumbers(Graphics2D graphics2D, FontRenderContext fContext, Font f) {
         for (int row = 0; row < sudoku.getNumRows(); row++) {
             for (int col = 0; col < sudoku.getNumColumns(); col++) {
@@ -124,14 +132,25 @@ public class SudokuPanel extends JPanel {
         }
     }
 
+    /**
+     * Set the width of the columns on the board
+     * @param columnWidth width of the columns
+     */
     public void setColumnWidth(int columnWidth) {
         this.columnWidth = columnWidth;
     }
 
+    /**
+     * Set the height of the rows on the board
+     * @param rowHeight height of the rows
+     */
     public void setRowHeight(int rowHeight) {
         this.rowHeight = rowHeight;
     }
 
+    /**
+     * ActionListener to draw the pressed number on the sudoku board.
+     */
     public class NumberActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
