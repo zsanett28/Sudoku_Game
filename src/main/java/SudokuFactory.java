@@ -2,27 +2,30 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 public class SudokuFactory {
     /**
      * Return a sudoku game with random numbers.
-     * @param sudokuType chosen type of the sudoku game (6x6 or 9x9)
+     *
+     * @param sudokuType  chosen type of the sudoku game (6x6 or 9x9)
      * @param sudokuLevel depends on the chosen sudokuLevel of the sudoku game (easy, medium, hard)
      * @return sudoku game
      */
     public Sudoku createSudoku(SudokuLevel sudokuLevel, SudokuType sudokuType) {
         Sudoku sudoku = new Sudoku(sudokuType.getRows(), sudokuType.getColumns(), sudokuType.getBoxWidth(), sudokuType.getBoxHeight(), sudokuType.getValidValues());
         Sudoku copy = new Sudoku(sudoku);
-
         Random randomGenerator = new Random();
 
-        //stream
         List<String> notUsedValidValues = new ArrayList<String>(Arrays.asList(copy.getValidValues()));
-        for (int row = 0; row < copy.getNumRows(); row++) {
-            int randomValue = randomGenerator.nextInt(notUsedValidValues.size());
-            copy.makeMove(row, 0, notUsedValidValues.get(randomValue), true);
-            notUsedValidValues.remove(randomValue);
-        }
+
+        IntStream.range(0, copy.getNumRows())
+                .forEach(row -> {
+                            int randomValue = randomGenerator.nextInt(notUsedValidValues.size());
+                            copy.makeMove(row, 0, notUsedValidValues.get(randomValue), true);
+                            notUsedValidValues.remove(randomValue);
+                        }
+                );
 
         backtrackSudokuSolver(0, 0, copy);
 
@@ -55,11 +58,11 @@ public class SudokuFactory {
 
     /**
      * Solve the sudoku with backtracking.
-     * @param row number of rows of the sudoku
+     *
+     * @param row    number of rows of the sudoku
      * @param column number of columns of the sudoku
      * @param sudoku sudoku game, which is created
-     * @return
-     * true, if the moves are valid during solving the sudoku
+     * @return true, if the moves are valid during solving the sudoku
      * false, if the moves are not valid during solving the sudoku
      */
     private boolean backtrackSudokuSolver(int row, int column, Sudoku sudoku) {

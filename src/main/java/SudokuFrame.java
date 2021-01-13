@@ -20,8 +20,8 @@ public class SudokuFrame extends JFrame {
     private final JPanel timerPanel;
     private final StopWatch stopWatch;
     private final JPanel buttonPanel;
+    private final SudokuFactory sudokuFactory;
     private Sudoku sudoku;
-    private SudokuFactory sudokuFactory;
 
     /**
      * Constructor of SudokuFrame.
@@ -242,7 +242,7 @@ public class SudokuFrame extends JFrame {
                         "Unsolved Sudoku",
                         JOptionPane.ERROR_MESSAGE);
                 stopWatch.resume();
-            } else if (sudoku.isValidSolution()){
+            } else if (sudoku.isValidSolution()) {
                 stopWatch.pause();
                 try {
                     // open an audio input stream
@@ -319,6 +319,7 @@ public class SudokuFrame extends JFrame {
 
     /**
      * Regenerate the sudoku board and number buttons according to sudoku the type level of the chosen sudoku.
+     *
      * @param sudoku sudoku game
      */
     public void recreateGame(Sudoku sudoku) {
@@ -337,6 +338,7 @@ public class SudokuFrame extends JFrame {
 
     /**
      * Design and add number buttons to numbersSelectionPanel.
+     *
      * @param sudoku sudoku game
      */
     private void addNumberButtons(Sudoku sudoku) {
@@ -353,9 +355,10 @@ public class SudokuFrame extends JFrame {
 
     /**
      * Set ActionListeners to JMenuItems of 6x6 sudoku.
-     * @param easy easy level JMenuItem
+     *
+     * @param easy   easy level JMenuItem
      * @param medium medium level JMenuItem
-     * @param hard hard level JMenuItem
+     * @param hard   hard level JMenuItem
      */
     private void setLevelFor6x6(JMenuItem easy, JMenuItem medium, JMenuItem hard) {
         easy.addActionListener(e -> {
@@ -374,9 +377,10 @@ public class SudokuFrame extends JFrame {
 
     /**
      * Set ActionListeners to JMenuItems of 9x9 sudoku.
-     * @param easy easy level JMenuItem
+     *
+     * @param easy   easy level JMenuItem
      * @param medium medium level JMenuItem
-     * @param hard hard level JMenuItem
+     * @param hard   hard level JMenuItem
      */
     private void setLevelFor9x9(JMenuItem easy, JMenuItem medium, JMenuItem hard) {
         easy.addActionListener(e -> {
@@ -395,6 +399,7 @@ public class SudokuFrame extends JFrame {
 
     /**
      * Start the stopwatch, after the beginning of the game.
+     *
      * @param timeLabel label, where the elapsed time appears
      */
     private void startTimer(final JLabel timeLabel) {

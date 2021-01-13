@@ -1,3 +1,7 @@
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 public class Sudoku {
 
     private final int ROWS;
@@ -10,10 +14,11 @@ public class Sudoku {
 
     /**
      * Constructor of Sudoku.
-     * @param rows number of rows of the sudoku
-     * @param columns number of columns of the sudoku
-     * @param boxWidth width of the box
-     * @param boxHeight heigth of the box
+     *
+     * @param rows        number of rows of the sudoku
+     * @param columns     number of columns of the sudoku
+     * @param boxWidth    width of the box
+     * @param boxHeight   heigth of the box
      * @param validValues a String array with the valid values
      */
     public Sudoku(int rows, int columns, int boxWidth, int boxHeight, String[] validValues) {
@@ -30,6 +35,7 @@ public class Sudoku {
 
     /**
      * Constructor of Sudoku.
+     *
      * @param sudoku sudoku game
      */
     public Sudoku(Sudoku sudoku) {
@@ -54,6 +60,7 @@ public class Sudoku {
 
     /**
      * Get the sudoku's number of rows.
+     *
      * @return number of rows
      */
     public int getNumRows() {
@@ -62,6 +69,7 @@ public class Sudoku {
 
     /**
      * Get the sudoku's number of columns.
+     *
      * @return number of columns
      */
     public int getNumColumns() {
@@ -70,6 +78,7 @@ public class Sudoku {
 
     /**
      * Get the width of the box.
+     *
      * @return width of the box
      */
     public int getBoxWidth() {
@@ -78,6 +87,7 @@ public class Sudoku {
 
     /**
      * Get the height of the box.
+     *
      * @return height of the box
      */
     public int getBoxHeight() {
@@ -86,6 +96,7 @@ public class Sudoku {
 
     /**
      * Get the valid values from the String[] array
+     *
      * @return array of valid values
      */
     public String[] getValidValues() {
@@ -94,9 +105,10 @@ public class Sudoku {
 
     /**
      * Make a move in the sudoku game.
-     * @param row row index
-     * @param col column index
-     * @param value the given value
+     *
+     * @param row       row index
+     * @param col       column index
+     * @param value     the given value
      * @param isMutable mutable
      */
     public void makeMove(int row, int col, String value, boolean isMutable) {
@@ -108,37 +120,63 @@ public class Sudoku {
 
     /**
      * Check if the current move is valid or not.
-     * @param row row index
-     * @param col column index
+     *
+     * @param row   row index
+     * @param col   column index
      * @param value the given value
-     * @return
-     * true, if it is valid
+     * @return true, if it is valid
      * false, if it is not valid
      */
     public boolean isValidMove(int row, int col, String value) {
-        if (this.inRange(row, col)) {
-            //return !this.numInCol(col, value) && !this.numInRow(row, value) && !this.numInBox(row, col, value);
-            return true;
-        }
-        return false;
+        return this.inRange(row, col);
     }
 
     public boolean isValidSolution() {
         if (!boardFull()) {
             return false;
-        }
-        for (int row = 0; row < this.ROWS; row++) {
-            for (int col = 0; col < this.COLUMNS; col++) {
-                if (isSlotMutable(row, col)) {
-                    String value = board[row][col];
-                    board[row][col] = "";
-                    boolean isValid = this.numInCol(col, value) || this.numInRow(row, value) || this.numInBox(row, col, value);
-                    board[row][col] = value;
-                    if(isValid) {
-                        return false;
+        } else {
+            for (int row = 0; row < this.ROWS; row++) {
+                for (int col = 0; col < this.COLUMNS; col++) {
+                    if (isSlotMutable(row, col)) {
+                        String value = board[row][col];
+                        board[row][col] = "";
+                        boolean isValid = this.numInCol(col, value) || this.numInRow(row, value) || this.numInBox(row, col, value);
+                        board[row][col] = value;
+                        if(isValid) {
+                            return false;
+                        }
                     }
                 }
             }
+
+            /*return IntStream.range(0, this.ROWS)
+                    .forEach(row -> IntStream.range(0, this.COLUMNS)
+                            .filter((int r, int c) -> isSlotMutable(r, c))
+                            .map((int r, int c) -> {
+                                String value = board[r][c];
+                                board[r][c] = "";
+                                boolean isValid = this.numInCol(c, value) || this.numInRow(r, value) || this.numInBox(r, c, value);
+                                board[r][c] = value;
+                                if (isValid) {
+                                    return false;
+                                }
+                            }
+                    ));*/
+
+            /*return Arrays.stream(board)
+                    .flatMap(row -> Arrays.stream(row))
+                    .forEach(element -> IntStream.range(0, this.COLUMNS)
+                            .anyMatch(col -> isSlotMutable(row, col))
+                            .map((int row, int col) -> {
+                                String value = board[r][c];
+                                board[r][c] = "";
+                                boolean isValid = this.numInCol(c, value) || this.numInRow(r, value) || this.numInBox(r, c, value);
+                                board[r][c] = value;
+                                if (isValid) {
+                                    return false;
+                                }
+                            })
+                    );*/
         }
         return true;
     }
@@ -186,10 +224,10 @@ public class Sudoku {
 
     /**
      * Check if the slot is available
+     *
      * @param row row index
      * @param col column index
-     * @return
-     * true, if it is available
+     * @return true, if it is available
      * false, if it is not available
      */
     public boolean isSlotAvailable(int row, int col) {
@@ -198,10 +236,10 @@ public class Sudoku {
 
     /**
      * Check if the slot is mutable
+     *
      * @param row row index
      * @param col column index
-     * @return
-     * true, if it is mutable
+     * @return true, if it is mutable
      * false, if it is not mutable
      */
     public boolean isSlotMutable(int row, int col) {
@@ -210,6 +248,7 @@ public class Sudoku {
 
     /**
      * Get the value from a specific position of the sudoku
+     *
      * @param row row index
      * @param col column index
      * @return the searched value
@@ -227,9 +266,9 @@ public class Sudoku {
 
     /**
      * Return if the given value if valid or not.
+     *
      * @param value the given value
-     * @return
-     * true, if it is valid
+     * @return true, if it is valid
      * flase, if it is not valid
      */
     private boolean isValidValue(String value) {
@@ -242,10 +281,10 @@ public class Sudoku {
 
     /**
      * Return if the given indexes are in range or not.
+     *
      * @param row row index
      * @param col column index
-     * @return
-     * true, if the indexes are in range
+     * @return true, if the indexes are in range
      * false, if the indexes are not in range
      */
     public boolean inRange(int row, int col) {
@@ -254,8 +293,8 @@ public class Sudoku {
 
     /**
      * Check if he sudoku is filled
-     * @return
-     * true, if the sudoku board is full
+     *
+     * @return true, if the sudoku board is full
      * false, if the sudoku board is not full
      */
     public boolean boardFull() {
@@ -274,39 +313,31 @@ public class Sudoku {
 
     /**
      * Print the sudoku board.
-     * @return
+     *
+     * @return a string with the elements of the board
      */
     @Override
     public String toString() {
-        String str = "Game Board:\n";
-        for (int row = 0; row < this.ROWS; row++) {
-            for (int col = 0; col < this.COLUMNS; col++) {
-                str += this.board[row][col] + " ";
-            }
-            str += "\n";
-        }
-        return str + "\n";
+        return "Game Board:\n" + Arrays.stream(board)
+                .map(element -> String.join(" ", element))
+                .collect(Collectors.joining("\n"));
     }
 
     /**
      * Initialize the sudoku board.
      */
     private void initializeBoard() {
-        for (int row = 0; row < this.ROWS; row++) {
-            for (int col = 0; col < this.COLUMNS; col++) {
-                this.board[row][col] = "";
-            }
-        }
+        IntStream.range(0, this.ROWS)
+                .forEach(r -> IntStream.range(0, this.COLUMNS)
+                        .forEach(c -> this.board[r][c] = ""));
     }
 
     /**
      * Initialize mutable slots.
      */
     private void initializeMutableSlots() {
-        for (int row = 0; row < this.ROWS; row++) {
-            for (int col = 0; col < this.COLUMNS; col++) {
-                this.mutable[row][col] = true;
-            }
-        }
+        IntStream.range(0, this.ROWS)
+                .forEach(r -> IntStream.range(0, this.COLUMNS)
+                        .forEach(c -> this.mutable[r][c] = true));
     }
 }

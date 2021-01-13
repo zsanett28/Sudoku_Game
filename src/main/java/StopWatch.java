@@ -45,6 +45,7 @@ public class StopWatch {
 
     /**
      * Get the elapsed time.
+     *
      * @return the elapsed time
      */
     public long getElapsedTime() {

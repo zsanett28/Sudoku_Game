@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.font.FontRenderContext;
 import java.io.IOException;
 import java.net.URL;
+import java.util.stream.IntStream;
 
 public class SudokuPanel extends JPanel {
     private final int fontSize;
@@ -58,6 +59,7 @@ public class SudokuPanel extends JPanel {
 
     /**
      * Set the sudoku parameter.
+     *
      * @param sudoku sudoku game
      */
     public void setSudoku(Sudoku sudoku) {
@@ -66,6 +68,7 @@ public class SudokuPanel extends JPanel {
 
     /**
      * Draw the sudoku board on the sudoku panel.
+     *
      * @param g Graphics element
      */
     @Override
@@ -121,19 +124,20 @@ public class SudokuPanel extends JPanel {
     }
 
     private void fillSudokuNumbers(Graphics2D graphics2D, FontRenderContext fContext, Font f) {
-        for (int row = 0; row < sudoku.getNumRows(); row++) {
-            for (int col = 0; col < sudoku.getNumColumns(); col++) {
-                if (!sudoku.isSlotAvailable(row, col)) {
-                    int textWidth = (int) f.getStringBounds(sudoku.getValue(row, col), fContext).getWidth();
-                    int textHeight = (int) f.getStringBounds(sudoku.getValue(row, col), fContext).getHeight();
-                    graphics2D.drawString(sudoku.getValue(row, col), (col * columnWidth) + ((columnWidth / 2) - (textWidth / 2)), (row * rowHeight) + ((rowHeight / 2) + (textHeight / 2)) - 5);
-                }
-            }
-        }
+        IntStream.range(0, sudoku.getNumRows())
+                .forEach(row -> IntStream.range(0, sudoku.getNumColumns())
+                        .forEach(col -> {
+                            if (!sudoku.isSlotAvailable(row, col)) {
+                                int textWidth = (int) f.getStringBounds(sudoku.getValue(row, col), fContext).getWidth();
+                                int textHeight = (int) f.getStringBounds(sudoku.getValue(row, col), fContext).getHeight();
+                                graphics2D.drawString(sudoku.getValue(row, col), (col * columnWidth) + ((columnWidth / 2) - (textWidth / 2)), (row * rowHeight) + ((rowHeight / 2) + (textHeight / 2)) - 5);
+                            }
+                        }));
     }
 
     /**
      * Set the width of the columns on the board
+     *
      * @param columnWidth width of the columns
      */
     public void setColumnWidth(int columnWidth) {
@@ -142,6 +146,7 @@ public class SudokuPanel extends JPanel {
 
     /**
      * Set the height of the rows on the board
+     *
      * @param rowHeight height of the rows
      */
     public void setRowHeight(int rowHeight) {
