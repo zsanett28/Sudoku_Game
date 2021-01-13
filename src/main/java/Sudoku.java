@@ -117,9 +117,30 @@ public class Sudoku {
      */
     public boolean isValidMove(int row, int col, String value) {
         if (this.inRange(row, col)) {
-            return !this.numInCol(col, value) && !this.numInRow(row, value) && !this.numInBox(row, col, value);
+            //return !this.numInCol(col, value) && !this.numInRow(row, value) && !this.numInBox(row, col, value);
+            return true;
         }
         return false;
+    }
+
+    public boolean isValidSolution() {
+        if (!boardFull()) {
+            return false;
+        }
+        for (int row = 0; row < this.ROWS; row++) {
+            for (int col = 0; col < this.COLUMNS; col++) {
+                if (isSlotMutable(row, col)) {
+                    String value = board[row][col];
+                    board[row][col] = "";
+                    boolean isValid = this.numInCol(col, value) || this.numInRow(row, value) || this.numInBox(row, col, value);
+                    board[row][col] = value;
+                    if(isValid) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     public boolean numInCol(int col, String value) {

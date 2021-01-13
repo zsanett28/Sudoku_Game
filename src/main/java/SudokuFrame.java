@@ -21,7 +21,11 @@ public class SudokuFrame extends JFrame {
     private final StopWatch stopWatch;
     private final JPanel buttonPanel;
     private Sudoku sudoku;
+    private SudokuFactory sudokuFactory;
 
+    /**
+     * Constructor of SudokuFrame.
+     */
     public SudokuFrame() {
         this.setTitle("Sudoku Game");
         this.setSize(700, 850);
@@ -36,6 +40,8 @@ public class SudokuFrame extends JFrame {
         startPanel = new JPanel();
         startPanel.setSize(700, 850);
         startPanel.setBackground(new Color(200, 80, 5));
+
+        sudokuFactory = new SudokuFactory();
 
         JButton button6x6 = new JButton("6x6 Sudoku");
         button6x6.setBackground(new Color(255, 229, 180));
@@ -185,8 +191,7 @@ public class SudokuFrame extends JFrame {
             layout.show(cardPanel, "MainPanel");
             startTimer(timeLabel);
             mainMenuBar.setVisible(true);
-            MediumGame gameLevel = new MediumGame();
-            Sudoku newSudoku = gameLevel.createSudoku(SudokuType.SIXBYSIX);
+            Sudoku newSudoku = sudokuFactory.createSudoku(SudokuLevel.MEDIUM, SudokuType.SIXBYSIX);
             recreateGame(newSudoku);
             setLevelFor6x6(easy, medium, hard);
         });
@@ -195,8 +200,7 @@ public class SudokuFrame extends JFrame {
             layout.show(cardPanel, "MainPanel");
             startTimer(timeLabel);
             mainMenuBar.setVisible(true);
-            MediumGame gameLevel = new MediumGame();
-            Sudoku newSudoku = gameLevel.createSudoku(SudokuType.NINEBYNINE);
+            Sudoku newSudoku = sudokuFactory.createSudoku(SudokuLevel.MEDIUM, SudokuType.NINEBYNINE);
             recreateGame(newSudoku);
             setLevelFor9x9(easy, medium, hard);
         });
@@ -218,7 +222,27 @@ public class SudokuFrame extends JFrame {
         submitButton.setForeground(Color.WHITE);
         submitButton.setFont(new Font("SansSerif", Font.BOLD, 20));
         submitButton.addActionListener(e -> {
-            if (sudoku.boardFull()) {
+            if (!sudoku.boardFull()) {
+                stopWatch.pause();
+                try {
+                    // open an audio input stream
+                    URL url = this.getClass().getClassLoader().getResource("fail.wav");
+                    AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
+                    // get a sound clip resource
+                    Clip clip = AudioSystem.getClip();
+                    // open audio clip and load samples from the audio input stream
+                    clip.open(audioIn);
+                    clip.start();
+                } catch (UnsupportedAudioFileException | IOException | LineUnavailableException exception) {
+                    exception.printStackTrace();
+                }
+
+                JOptionPane.showMessageDialog(mainPanel,
+                        "Oops, there are some empty squares!",
+                        "Unsolved Sudoku",
+                        JOptionPane.ERROR_MESSAGE);
+                stopWatch.resume();
+            } else if (sudoku.isValidSolution()){
                 stopWatch.pause();
                 try {
                     // open an audio input stream
@@ -253,8 +277,8 @@ public class SudokuFrame extends JFrame {
                 }
 
                 JOptionPane.showMessageDialog(mainPanel,
-                        "Oops, there are some empty squares!",
-                        "Unsolved Sudoku",
+                        "Oops, wrong solution!",
+                        "Wrong Sudoku Solution",
                         JOptionPane.ERROR_MESSAGE);
                 stopWatch.resume();
             }
@@ -335,18 +359,15 @@ public class SudokuFrame extends JFrame {
      */
     private void setLevelFor6x6(JMenuItem easy, JMenuItem medium, JMenuItem hard) {
         easy.addActionListener(e -> {
-            EasyGame gameLevel = new EasyGame();
-            Sudoku newSudoku = gameLevel.createSudoku(SudokuType.SIXBYSIX);
+            Sudoku newSudoku = sudokuFactory.createSudoku(SudokuLevel.EASY, SudokuType.SIXBYSIX);
             recreateGame(newSudoku);
         });
         medium.addActionListener(e -> {
-            MediumGame gameLevel = new MediumGame();
-            Sudoku newSudoku = gameLevel.createSudoku(SudokuType.SIXBYSIX);
+            Sudoku newSudoku = sudokuFactory.createSudoku(SudokuLevel.MEDIUM, SudokuType.SIXBYSIX);
             recreateGame(newSudoku);
         });
         hard.addActionListener(e -> {
-            HardGame gameLevel = new HardGame();
-            Sudoku newSudoku = gameLevel.createSudoku(SudokuType.SIXBYSIX);
+            Sudoku newSudoku = sudokuFactory.createSudoku(SudokuLevel.HARD, SudokuType.SIXBYSIX);
             recreateGame(newSudoku);
         });
     }
@@ -359,18 +380,15 @@ public class SudokuFrame extends JFrame {
      */
     private void setLevelFor9x9(JMenuItem easy, JMenuItem medium, JMenuItem hard) {
         easy.addActionListener(e -> {
-            EasyGame gameLevel = new EasyGame();
-            Sudoku newSudoku = gameLevel.createSudoku(SudokuType.NINEBYNINE);
+            Sudoku newSudoku = sudokuFactory.createSudoku(SudokuLevel.EASY, SudokuType.NINEBYNINE);
             recreateGame(newSudoku);
         });
         medium.addActionListener(e -> {
-            MediumGame gameLevel = new MediumGame();
-            Sudoku newSudoku = gameLevel.createSudoku(SudokuType.NINEBYNINE);
+            Sudoku newSudoku = sudokuFactory.createSudoku(SudokuLevel.MEDIUM, SudokuType.NINEBYNINE);
             recreateGame(newSudoku);
         });
         hard.addActionListener(e -> {
-            HardGame gameLevel = new HardGame();
-            Sudoku newSudoku = gameLevel.createSudoku(SudokuType.NINEBYNINE);
+            Sudoku newSudoku = sudokuFactory.createSudoku(SudokuLevel.HARD, SudokuType.NINEBYNINE);
             recreateGame(newSudoku);
         });
     }
