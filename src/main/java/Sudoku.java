@@ -148,35 +148,6 @@ public class Sudoku {
                     }
                 }
             }
-
-            /*return IntStream.range(0, this.ROWS)
-                    .forEach(row -> IntStream.range(0, this.COLUMNS)
-                            .filter((int r, int c) -> isSlotMutable(r, c))
-                            .map((int r, int c) -> {
-                                String value = board[r][c];
-                                board[r][c] = "";
-                                boolean isValid = this.numInCol(c, value) || this.numInRow(r, value) || this.numInBox(r, c, value);
-                                board[r][c] = value;
-                                if (isValid) {
-                                    return false;
-                                }
-                            }
-                    ));*/
-
-            /*return Arrays.stream(board)
-                    .flatMap(row -> Arrays.stream(row))
-                    .forEach(element -> IntStream.range(0, this.COLUMNS)
-                            .anyMatch(col -> isSlotMutable(row, col))
-                            .map((int row, int col) -> {
-                                String value = board[r][c];
-                                board[r][c] = "";
-                                boolean isValid = this.numInCol(c, value) || this.numInRow(r, value) || this.numInBox(r, c, value);
-                                board[r][c] = value;
-                                if (isValid) {
-                                    return false;
-                                }
-                            })
-                    );*/
         }
         return true;
     }
